@@ -10,13 +10,13 @@ int main(void) {
   float factor = 100;
   float screen_width = 16 * factor;
   float screen_height = 9 * factor;
-  float scalar = 1.0;
+  float scalar = 0.3;
   float texture_width = screen_width * scalar;
   float texture_height = screen_height * scalar;
   bool paused = false;
 
   InitWindow(screen_width, screen_height, "SmoothLife");
-  // SetTargetFPS(60);
+  SetTargetFPS(60);
 
   // Image image = GenImagePerlinNoise(texture_width, texture_height, 0,
   // 0, 5.0f); Image image = GenImageWhiteNoise(texture_width, texture_height,
@@ -54,7 +54,8 @@ int main(void) {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
       BeginTextureMode(state[i]);
       // DrawRing(cur_pos, 10, 20, 0, 360, 12, WHITE);
-      DrawCircle(cur_pos.x, screen_height - cur_pos.y, 20, WHITE);
+      DrawCircle(cur_pos.x * scalar, (screen_height - (cur_pos.y)) * scalar,
+                 20 * scalar, WHITE);
       EndTextureMode();
     }
     if (IsKeyPressed(KEY_SPACE)) {
