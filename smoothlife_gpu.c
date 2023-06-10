@@ -10,7 +10,7 @@ int main(void) {
   float factor = 100;
   float screen_width = 16 * factor;
   float screen_height = 9 * factor;
-  float scalar = 0.3;
+  float scalar = 0.25;
   float texture_width = screen_width * scalar;
   float texture_height = screen_height * scalar;
   bool paused = false;
@@ -47,9 +47,17 @@ int main(void) {
   Vector2 resolution = {texture_width, texture_height};
   int resolution_loc = GetShaderLocation(shader, "resolution");
   SetShaderValue(shader, resolution_loc, &resolution, SHADER_UNIFORM_VEC2);
-
+  int timeloc = GetShaderLocation(shader, "localtime");
+  int b1adder = GetShaderLocation(shader, "b1adder");
+  float time = (float)GetTime();
+  SetShaderValue(shader, timeloc, &time, SHADER_UNIFORM_FLOAT);
   size_t i = 0;
+  float b1add = 0.0001;
   while (!WindowShouldClose()) {
+    time = (float)GetTime();
+    SetShaderValue(shader, timeloc, &time, SHADER_UNIFORM_FLOAT);
+    b1add += 0.0001;
+    SetShaderValue(shader, b1adder, &b1add, SHADER_UNIFORM_FLOAT);
     Vector2 cur_pos = GetMousePosition();
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
       BeginTextureMode(state[i]);
@@ -65,7 +73,11 @@ int main(void) {
       BeginTextureMode(state[1 - i]);
       ClearBackground(BLACK);
       BeginShaderMode(shader);
-      DrawTexture(state[i].texture, 0, 0, WHITE);
+      // DrawTexture(state[i].texture, 0, 0, WHITE);
+      DrawTextureRec(
+          state[i].texture,
+          (Rectangle){0, 0, state[i].texture.width, state[i].texture.height},
+          (Vector2){0, 0}, WHITE);
       EndShaderMode();
       EndTextureMode();
       i = 1 - i;

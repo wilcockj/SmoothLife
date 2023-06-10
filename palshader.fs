@@ -21,7 +21,9 @@ void main(){
     vec4 t = texture(texture0,fragTexCoord);
     if(t.r != 0.0){
         //vec3 palettized = palette(t.r,vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,1.0),vec3(0.0,0.333,0.667));
-        vec3 palettized = palette(t.r,vec3(0.938,0.328,0.718),vec3(0.659,0.438,0.328),vec3(0.388,0.388,0.296),vec3(2.538,2.478,0.168));
+        //vec3 palettized = palette(t.r,vec3(0.938,0.328,0.718),vec3(0.659,0.438,0.328),vec3(0.388,0.388,0.296),vec3(2.538,2.478,0.168));
+        vec3 palettized = palette(t.r,vec3(0.821,0.328,0.242),vec3(0.659,0.481,0.896),vec3(0.612,0.340,0.296),vec3(2.820,3.026,-0.273));
+
         finalColor = vec4(palettized,1);
     }
     else

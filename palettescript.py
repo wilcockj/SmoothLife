@@ -8,4 +8,4 @@ for pal in splitted:
     colors = pal.split(" ")
     print(f",vec3({colors[0]},{colors[1]},{colors[2]})", end="")
 
-print("\n")
+print(");\n")

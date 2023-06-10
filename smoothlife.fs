@@ -7,6 +7,8 @@ in vec4 fragColor;
 // Input uniform values
 uniform sampler2D texture0;
 uniform vec4 colDiffuse;
+uniform float localtime;
+uniform float b1adder;
 
 // Output fragment color
 out vec4 finalColor;
@@ -20,7 +22,7 @@ float ra = 21;
 float b1 = 0.257;
 float b2 = 0.336;
 float d1 = 0.365;
-float d2 = 0.549;
+float d2 = 0.749;
 float alpha_n = 0.028;
 float alpha_m = 0.147;
 #else
@@ -34,6 +36,11 @@ float alpha_m = 0.147;
 
 float dt = 0.05;
 
+float random (vec2 st) {
+    return fract(sin(dot(st.xy,
+                         vec2(12.9898,78.233)))*
+        43758.5453123);
+}
 vec3 palette( in float t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
 {
     return a + b*cos( 6.28318*(c*t+d) );
@@ -82,6 +89,8 @@ void main()
     float n = 0;
     float N = PI*ra*ra - M;
 
+    //alpha_n += grid(cx, cy)/4;
+    b1 += b1adder;
     for (float dy = -ra; dy <= ra; dy += 1.0) {
         for (float dx = -ra; dx <= ra; dx += 1.0) {
             float x = cx + dx;
@@ -101,7 +110,8 @@ void main()
 #endif
 
     //float palv = palette(v,vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,1.0),vec3(0.0,0.333,0.667))
+    vec2 seed = vec2(cx + 1,cy + 1) * localtime;
+    float rnd = random(seed);
     finalColor = vec4(v, v, v, 1);
-
-    // finalColor = texture(texture0, vec2(fragTexCoord.x, -fragTexCoord.y));
+       // finalColor = texture(texture0, vec2(fragTexCoord.x, -fragTexCoord.y));
 }
